@@ -31,7 +31,7 @@ public class League {
 
         List<String> finalPositions = new ArrayList<>();
 
-        for (Map.Entry<String, Integer> entry : getTable()) {
+        for (Map.Entry<String, Integer> entry : getOrderedTable()) {
             if(entry.getValue() == lastPoints) {
                 // Equal points with the previous person
                 // Bump how many people are in this spot.
@@ -56,11 +56,14 @@ public class League {
         return finalPositions;
     }
 
-    private List<Map.Entry<String, Integer>> getTable() {
+    private List<Map.Entry<String, Integer>> getOrderedTable() {
         return leagueTable.entrySet().stream()
                 .sorted((entry1, entry2) -> {
+                    // We want the higher score first
                     final var valueSort = entry2.getValue().compareTo(entry1.getValue());
                     if (valueSort == 0) {
+                        // Then the alphabetically lower one.
+                        // Which explains why this comparison is the other way round.
                         return entry1.getKey().compareTo(entry2.getKey());
                     }
                     return valueSort;
